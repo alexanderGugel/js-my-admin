@@ -1,6 +1,6 @@
 {
   "name": "js-my-admin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-client": "watchify client/index.js -o client/bundle.js -d -v & stylus --watch --include-css client/index.styl",
