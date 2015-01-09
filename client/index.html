@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>jsMyAdmin</title>
+
+    <!-- FONT -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body>
+    <form class="connect">
+      <h1><i class="icon ion-ios-bolt"></i> jsMyAdmin</h1>
+      <input placeholder="connection string" value="postgres://alexandergugel@localhost">
+      <button type="submit">Connect!</button>
+      <span class="error">&nbsp;</span>
+    </form>
+
+    <div class="dashboard">
+      <header>
+        <h1><i class="icon ion-ios-bolt"></i> jsMyAdmin</h1>
+        <a href="#" class="logout">Logout</a>
+      </header>
+      <form class="sqlQuery">
+        <input autofocus>
+        <div class="error"></div>
+      </form>
+      <table class="rows"></table>
+      <div class="toast"></div>
+    </div>
+    <script src="/bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "name": "js-my-admin",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-client": "watchify client/index.js -o client/bundle.js -d -v & stylus --watch --include-css client/index.styl",
+    "dev-server": "nodemon server",
+    "dev": "npm run dev-client & npm run dev-server",
+    "build": "browserify client/index.js -o client/bundle.js && stylus --include-css client/index.styl",
+    "start": "npm run build && node server"
+  },
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "browserify": "^8.0.3",
+    "express": "^4.10.7",
+    "normalize.css": "^3.0.2",
+    "pg": "^4.1.1",
+    "reqwest": "^1.1.5",
+    "stylus": "^0.49.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.2.1",
+    "watchify": "^2.2.1"
+  },
+  "description": "Because nobody really wants to use PHP.... or MySQL.",
+  "main": "api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexanderGugel/js-my-admin.git"
+  },
+  "author": "Alexander Gugel <alexander.gugel@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexanderGugel/js-my-admin/issues"
+  },
+  "homepage": "https://github.com/alexanderGugel/js-my-admin"
+}
