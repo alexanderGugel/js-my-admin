@@ -1,19 +1,76 @@
 'use strict';
 
-var reqwest       = require('reqwest');
-var $connectForm  = document.querySelector('form.connect');
-var $dashboard    = document.querySelector('.dashboard');
-var $logout       = $dashboard.querySelector('.logout');
-var $table        = $dashboard.querySelector('table');
-var $sqlQueryForm = $dashboard.querySelector('form.sqlQuery');
-var $error        = $dashboard.querySelector('.error');
-var $toast        = $dashboard.querySelector('.toast');
+var reqwest         = require('reqwest');
+var AmpersandRouter = require('ampersand-router');
+var $connectForm    = document.querySelector('form.connect');
+var $dashboard      = document.querySelector('.dashboard');
+var $logout         = $dashboard.querySelector('.logout');
+var $table          = $dashboard.querySelector('table');
+var $sqlQueryForm   = $dashboard.querySelector('form.sqlQuery');
+var $error          = $dashboard.querySelector('.error');
+var $toast          = $dashboard.querySelector('.toast');
 
-if (!getConnectionString()) {
-  renderConnect();
-} else {
-  renderDashboard();
-}
+var router = new (AmpersandRouter.extend({
+  routes: {
+    '': 'index',
+    'connect': 'connect',
+    'dashboard/:query': 'dashboard',
+    'dashboard': 'dashboard'
+  },
+
+  index: function() {
+    if (!getConnectionString()) {
+      this.redirectTo('connect');
+    } else {
+      this.redirectTo('dashboard');
+    }
+  },
+
+  connect: function() {
+    var self = this;
+    $dashboard.style.display = 'none';
+    $connectForm.style.display = 'block';
+    $connectForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var connectionString = $connectForm.querySelector('input').value;
+      query('SELECT 1;', connectionString, function(error, rows) {
+        if (error) {
+          error = JSON.parse(error.response);
+          console.error(error);
+          $connectForm.querySelector('.error').innerHTML = 'Couldn\'t connect :(';
+        } else {
+          setConnectionString(connectionString);
+          self.redirectTo('dashboard');
+        }
+      });
+    });
+  },
+
+  dashboard: function(sqlQuery) {
+    var self = this;
+    $dashboard.style.display = 'block';
+    $connectForm.style.display = 'none';
+    $logout.addEventListener('click', function(event) {
+      event.preventDefault();
+      removeConnectionString();
+      self.redirectTo('connect');
+    });
+    $sqlQueryForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var sqlQuery = $sqlQueryForm.querySelector('input').value;
+      notify(sqlQuery);
+      self.navigate('dashboard/' + sqlQuery);
+      query(sqlQuery, getConnectionString(), dashboardQueryCallback);
+    });
+    
+    $sqlQueryForm.querySelector('input').value = sqlQuery || 'SELECT * FROM information_schema.tables;';
+    $sqlQueryForm.dispatchEvent(new Event('submit'));
+  }
+}))();
+
+router.history.start();
+
+
 
 function getConnectionString() {
   return localStorage.getItem('connectionString');
@@ -27,58 +84,9 @@ function removeConnectionString() {
   localStorage.removeItem('connectionString');
 }
 
-function updateUrl(sqlQuery) {
-  window.location.hash = sqlQuery;
-}
-
 function notify(message) {
   $toast.innerHTML = message;
   $toast.style.opacity = 1;
-}
-
-function renderConnect() {
-  $dashboard.style.display = 'none';
-  $connectForm.style.display = 'block';
-  $connectForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-    var connectionString = $connectForm.querySelector('input').value;
-    query('SELECT 1;', connectionString, function(error, rows) {
-      if (error) {
-        error = JSON.parse(error.response);
-        console.error(error);
-        $connectForm.querySelector('.error').innerHTML = 'Couldn\'t connect :(';
-      } else {
-        setConnectionString(connectionString);
-        renderDashboard();
-      }
-    });
-  });
-}
-
-function renderDashboard() {
-  $dashboard.style.display = 'block';
-  $connectForm.style.display = 'none';
-  $logout.addEventListener('click', function(event) {
-    event.preventDefault();
-    removeConnectionString();
-    renderConnect();
-  });
-  $sqlQueryForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-    var sqlQuery = $sqlQueryForm.querySelector('input').value;
-    updateUrl(sqlQuery);
-    notify(sqlQuery);
-    query(sqlQuery, getConnectionString(), dashboardQueryCallback);
-  });
-  
-  var sqlQueryInit;
-  if (window.location.hash) {
-    sqlQueryInit = window.location.hash.substr(1);
-  } else {
-    sqlQueryInit = 'SELECT * FROM information_schema.tables;';
-  }
-  $sqlQueryForm.querySelector('input').value = sqlQueryInit;
-  $sqlQueryForm.dispatchEvent(new Event('submit'));
 }
 
 function query(sqlQuery, connectionString, callback) {
