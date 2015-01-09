@@ -1,3 +1,5 @@
+'use strict';
+
 var pg         = require('pg');
 var express    = require('express');
 var bodyParser = require('body-parser');
