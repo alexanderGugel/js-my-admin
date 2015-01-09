@@ -11,7 +11,7 @@ var query = function(connectionString, sqlQuery, callback) {
       // call `done()` to release the client back to the pool
       done();
       if (error) return callback(error);
-      callback(null, result.rows);
+      callback(null, result);
     });
   });
 };
@@ -26,11 +26,11 @@ router.post('/', function(req, res) {
   if (!req.body.sqlQuery) {
     return res.status(400).send({ error: 'Missing sqlQuery', sqlQuery: req.body.sqlQuery });
   }
-  query(req.body.connectionString, req.body.sqlQuery, function(error, rows) {
+  query(req.body.connectionString, req.body.sqlQuery, function(error, result) {
     if (error) {
       return res.status(400).send({ error: error });
     }
-    res.json({ rows: rows, sqlQuery: req.body.sqlQuery });
+    res.json({ rows: result.rows, fields: result.fields, sqlQuery: req.body.sqlQuery });
   });
 });
 

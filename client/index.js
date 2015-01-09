@@ -57,9 +57,17 @@ var $toast       = document.querySelector('.toast');
         $connectForm.querySelector('.error').innerHTML = 'Couldn\'t connect :(';
       } else {
         localStorage.setItem('connectionString', connectionString);
-        page('/');
+        page.redirect('/');
       }
     });
+  });
+
+  $dashboard.querySelector('table.rows thead').addEventListener('click', function(event) {
+    var el = event.srcElement;
+    if (el.dataset.format) {
+      el = el.parentNode;
+    }
+    var sqlQuery = localStorage.getItem('sqlQuery');
   });
 }());
 
@@ -92,13 +100,14 @@ function dashboardQueryCallback(error, result) {
   $toast.classList.add(error ? 'error' : 'success');
   $toast.style.opacity = 1;
   if (error) return;
-  var thead = '<thead><tr>' + Object.keys(result.rows[0]).map(function(column) {
-    return '<th>' + column + '</th>';
-  }).join('') + '</tr></thead>';
+  var thead = '<tr>' + result.fields.map(function(field) {
+    return '<th data-name="' + field.name + '">' + field.name + ' <span class="format" data-format="' + field.format + '">' + field.format + '</span></th>';
+  }).join('') + '</tr>';
   var tbody = result.rows.map(function(row) {
     return '<tr>' + Object.keys(row).map(function(column) {
       return '<td>' + row[column] + '</td>';
     }).join('') + '</tr>';
   }).join('');
-  $dashboard.querySelector('table.rows').innerHTML = thead + tbody;
+  $dashboard.querySelector('table.rows thead').innerHTML = thead;
+  $dashboard.querySelector('table.rows tbody').innerHTML = tbody;
 }
