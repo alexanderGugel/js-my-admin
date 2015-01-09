@@ -13,24 +13,23 @@
     <link rel="stylesheet" href="/index.css">
   </head>
   <body>
+    <div class="toast"></div>
     <form class="connect">
       <h1><i class="icon ion-ios-bolt"></i> jsMyAdmin</h1>
       <input placeholder="connection string" value="postgres://alexandergugel@localhost">
       <button type="submit">Connect!</button>
       <span class="error">&nbsp;</span>
     </form>
-
     <div class="dashboard">
       <header>
-        <h1><i class="icon ion-ios-bolt"></i> jsMyAdmin</h1>
-        <a href="#" class="logout">Logout</a>
+        <a href="/" class="logo"><i class="icon ion-ios-bolt"></i> jsMyAdmin</a>
+        <a href="/logout" class="logout"><button>Logout</button></a>
       </header>
       <form class="sqlQuery">
-        <input autofocus>
-        <div class="error"></div>
+        <textarea autofocus></textarea>
+        <button type="submit">Query!</button>
       </form>
       <table class="rows"></table>
-      <div class="toast"></div>
     </div>
     <script src="/bundle.js"></script>
   </body>

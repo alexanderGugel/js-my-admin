@@ -8,7 +8,7 @@ html, button, input, textarea, table {
 }
 
 html, body {
-  min-height: 100%;
+  height: 100%;
   background: rgb(232, 232, 232);
 }
 
@@ -34,10 +34,6 @@ html, body {
 
 .depth-5 {
   box-shadow: 0 19px 38px rgba(0,0,0,0.3), 0 15px 12px rgba(0,0,0,0.22);
-}
-
-header {
-  text-align: center;
 }
 
 .connect, .dashboard {
@@ -68,7 +64,7 @@ header {
     display: block;
     margin-top: 1em;
     word-wrap: break-word;
-    color: #B71C1C;
+    color: #E53935;
     font-weight: 600;
   }
 }
@@ -86,13 +82,14 @@ button {
   }
 }
 
-input {
+input, textarea {
   border: 0;
   border-radius: 2px;
   padding: 0.75em;
   background: #fff;
   @extend .depth-1;
   transition: all 250ms;
+  width: 100%;
   &:focus {
     outline: 0;
     @extend .depth-2;
@@ -100,38 +97,64 @@ input {
 }
 
 .dashboard {
-  .logout {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: inline-block;
-    padding: 0.5em 1em;
+  header {
+    text-align: center;
+    padding: 1em 0;
+    background: #fff;
+    @extend .depth-2;
+    position: relative;
+    .logo {
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .logout {
+      button {
+        margin: 0.5em;
+        color: #333;
+        padding: 0 1.5em;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
   }
 
   form.sqlQuery {
-    &, input {
-      width: 100%;
+    padding: 1.5em 1em;
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
     }
-    padding: 0 1em 1em;
-    .error {
-      word-wrap: break-word;
-      display: none;
-      margin-top: 0.5em;
-      border-radius: 2px;
-      padding: 0.5em 1em;
-      background: #B71C1C;
+    textarea {
+      resize: vertical;
+      text-align: left;
+      margin-bottom: 0.25em
+    }
+    button[type=submit] {
+      float: right;
+      font-weight: 600;
       color: #fff;
+      background: #1E88E5;
+      padding: 0.5em 2em;
+      &:active {
+        transition: all 100ms;
+        transform: translateY(3px);
+      }
+      &:focus {
+        outline: 0;
+      }
     }
   }
 
   table {
-    overflow: auto;
     display: block;
+    overflow: auto;
     background: #fff;
-    @extend .depth-1;
     width: 100%;
     table-layout: fixed;
-    border-radius: 2px;
     thead {
       border-bottom: 1px solid #ccc;
       tr {
@@ -165,18 +188,24 @@ input {
       }
     }
   }
-
-  .toast {
-    background: #388E3C;
-    color: #fff;
-    display: inline-block;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: 0.75em;
-    padding: 0.75em;
-    opacity: 0;
-    border-radius: 2px;
-    transition: all 1s ease-in-out;
-  }
 }
+
+.toast {
+  &.error {
+    background: #E53935;      
+  }
+  &.success {
+    background: #43A047;
+  }
+  color: #fff;
+  display: inline-block;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 0.75em;
+  padding: 0.75em;
+  opacity: 0;
+  border-radius: 2px;
+  transition: all 500ms ease-in-out;
+}
+

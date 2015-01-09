@@ -4,10 +4,10 @@ var pg         = require('pg');
 var express    = require('express');
 var bodyParser = require('body-parser');
 
-var query = function (connectionString, sqlQuery, callback) {
-  pg.connect(connectionString, function (error, client, done) {
+var query = function(connectionString, sqlQuery, callback) {
+  pg.connect(connectionString, function(error, client, done) {
     if (error) return callback(error);
-    client.query(sqlQuery, function (error, result) {
+    client.query(sqlQuery, function(error, result) {
       // call `done()` to release the client back to the pool
       done();
       if (error) return callback(error);
@@ -26,7 +26,7 @@ router.post('/', function(req, res) {
   if (!req.body.sqlQuery) {
     return res.status(400).send({ error: 'Missing sqlQuery', sqlQuery: req.body.sqlQuery });
   }
-  query(req.body.connectionString, req.body.sqlQuery, function (error, rows) {
+  query(req.body.connectionString, req.body.sqlQuery, function(error, rows) {
     if (error) {
       return res.status(400).send({ error: error });
     }
