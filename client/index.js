@@ -60,7 +60,7 @@ var $toast       = document.querySelector('.toast');
     page.redirect('/dashboard/' + sqlQuery);
   });
 
-  $connectForm.addEventListener('submit', function(event) {
+  $connectForm.addEventListener('submit', function (event) {
     event.preventDefault();
     var connectionString = $connectForm.querySelector('input').value;
     query('SELECT 1;', connectionString, function(error) {
@@ -72,6 +72,16 @@ var $toast       = document.querySelector('.toast');
         page.redirect('/');
       }
     });
+  });
+
+  $dashboard.querySelector('form.sqlQuery textarea').addEventListener('keydown', function(event) {
+    // if (event.keyCode === 13) {
+    //   if (event.ctrlKey) {
+    //     $dashboard.querySelector('form.sqlQuery textarea').value += '\n';
+    //   } else {
+    //     $dashboard.querySelector('form.sqlQuery button').click();
+    //   }
+    // }
   });
 
   $dashboard.querySelector('table.rows thead').addEventListener('click', function(event) {
