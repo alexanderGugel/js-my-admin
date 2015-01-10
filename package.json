@@ -3,14 +3,15 @@
   "version": "0.0.2",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-client": "watchify client/index.js -o client/bundle.js -d -v & stylus --watch --include-css client/index.styl",
+    "watch": "watchify client/index.js -o client/bundle.js -d -v & stylus --watch --include-css client/index.styl & forever -w server.js",
     "build": "browserify client/index.js -o client/bundle.js && stylus --include-css client/index.styl",
-    "start": "npm run build && node server"
+    "start": "npm run build && forever start server.js"
   },
   "dependencies": {
     "body-parser": "^1.10.1",
     "browserify": "^8.1.0",
     "express": "^4.10.7",
+    "forever": "^0.13.0",
     "normalize.css": "^3.0.2",
     "page": "^1.5.0",
     "pg": "^4.1.1",
