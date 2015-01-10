@@ -25,7 +25,13 @@ var $toast       = document.querySelector('.toast');
     $connectForm.style.display = 'none';
     $dashboard.querySelector('form.sqlQuery textarea').value = sqlQuery;
     localStorage.setItem('sqlQuery', sqlQuery);
-    query(sqlQuery, localStorage.getItem('connectionString'), dashboardQueryCallback);
+    var connectionString = localStorage.getItem('connectionString');
+    query(sqlQuery, connectionString, dashboardQueryCallback);
+    query('SELECT * FROM information_schema.tables;', connectionString, function(error, result) {
+      $dashboard.querySelector('.tables select').innerHTML = result.rows.map(function(table) {
+        return '<option data-table-name="' + table.table_name + '" data-table-schema="' + table.table_schema + '">' + table.table_schema + '/' + table.table_name + '</option>';
+      });
+    });
   });
 
   page('/logout', function() {
@@ -42,6 +48,12 @@ var $toast       = document.querySelector('.toast');
 
 
 (function _bindEvents() {
+  $dashboard.querySelector('.tables select').addEventListener('change', function(event) {
+    var selectedIndex = $dashboard.querySelector('.tables select').selectedIndex;
+    var selected = $dashboard.querySelector('.tables select').options[selectedIndex];
+    // TODO
+  });
+
   $dashboard.querySelector('form.sqlQuery').addEventListener('submit', function(event) {
     event.preventDefault();
     var sqlQuery = $dashboard.querySelector('form.sqlQuery textarea').value;
@@ -67,7 +79,7 @@ var $toast       = document.querySelector('.toast');
     if (el.dataset.format) {
       el = el.parentNode;
     }
-    var sqlQuery = localStorage.getItem('sqlQuery');
+    // var sqlQuery = localStorage.getItem('sqlQuery');
   });
 }());
 

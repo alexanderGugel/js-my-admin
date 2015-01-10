@@ -1,4 +1,9 @@
 @require "../node_modules/normalize.css/normalize.css";
+@require "util.styl";
+@require "grid.styl";
+@require "toast.styl";
+@require "connect.styl";
+@require "dashboard.styl";
 
 /* http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 /* apply a natural box layout model to all elements, but allowing components to change */
@@ -14,59 +19,6 @@ html, body {
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
-
-.depth-1 {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.depth-2 {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-.depth-3{
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-}
-
-.depth-4 {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-}
-
-.depth-5 {
-  box-shadow: 0 19px 38px rgba(0,0,0,0.3), 0 15px 12px rgba(0,0,0,0.22);
-}
-
-.connect, .dashboard {
-  display: none;
-}
-
-.connect {
-  transform: translate(-50%, -50%);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  text-align: center;
-  width: 100%;
-  padding: 0.25em;
-  width: 500px;
-  max-width: 100%;
-  input {
-    width: 200px;
-    max-width: 100%;
-    margin-bottom: 0.5em;
-  }
-  button {
-    background: #1565C0;
-    color: #fff;
-    padding: 0.75em 2em;
-  }
-  .error {
-    display: block;
-    margin-top: 1em;
-    word-wrap: break-word;
-    color: #E53935;
-    font-weight: 600;
-  }
 }
 
 button {
@@ -94,124 +46,5 @@ input, textarea {
     outline: 0;
     @extend .depth-2;
   }
-}
-
-.dashboard {
-  header {
-    text-align: center;
-    padding: 1em 0;
-    background: #fff;
-    @extend .depth-2;
-    position: relative;
-    .logo {
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .logout {
-      button {
-        margin: 0.5em;
-        color: #333;
-        padding: 0 1.5em;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-      }
-    }
-  }
-
-  form.sqlQuery {
-    padding: 1.5em 1em;
-    &:after {
-      content: '';
-      display: table;
-      clear: both;
-    }
-    textarea {
-      resize: vertical;
-      text-align: left;
-      margin-bottom: 0.25em
-    }
-    button[type=submit] {
-      float: right;
-      font-weight: 600;
-      color: #fff;
-      background: #1E88E5;
-      padding: 0.5em 2em;
-      &:active {
-        transition: all 100ms;
-        transform: translateY(3px);
-      }
-      &:focus {
-        outline: 0;
-      }
-    }
-  }
-
-  table {
-    display: block;
-    overflow: auto;
-    background: #fff;
-    width: 100%;
-    table-layout: fixed;
-    thead {
-      border-bottom: 1px solid #ccc;
-      tr {
-        th {
-          padding: 0.5em;
-          text-align: left;
-          .format {
-            font-weight: 400;
-            color: #ccc;
-            display: block;
-            font-size: 0.75em;
-            text-transform: uppercase;
-          }
-        }
-      }
-    }
-    tbody {
-      tr {
-        border-bottom: 1px solid #eee;
-        transition: all 200ms;
-        &:last-child {
-          border-bottom: 0;
-        }
-        &:nth-child(odd) {
-          background: #f9f9f9;
-        }
-        &:hover {
-          background: #eee;
-        }
-        td {
-          padding: 0.5em;
-          border-right: 1px solid #eee;
-          &:last-child {
-            border-right: 0;
-          }
-        }
-      }
-    }
-  }
-}
-
-.toast {
-  &.error {
-    background: #E53935;      
-  }
-  &.success {
-    background: #43A047;
-  }
-  color: #fff;
-  display: inline-block;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  margin: 0.75em;
-  padding: 0.75em;
-  opacity: 0;
-  border-radius: 2px;
-  transition: all 500ms ease-in-out;
 }
 

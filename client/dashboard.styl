@@ -1,0 +1,107 @@
+@require "util.styl";
+@require "grid.styl";
+
+
+.dashboard {
+  display: none;
+
+  nav {
+    @extend .row;
+    background: #fff;
+    @extend .depth-2;
+    padding: 0.5em;
+    .tables {
+      padding: 0.5em 0;
+    }
+    .logo {
+      text-align: center;
+      a {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      padding: 0.5em 1.5em;
+    }
+    .logout {
+      text-align: right;
+      button {
+        color: #333;
+        padding: 0.5em 1.5em;
+      }
+    }
+  }
+
+  form.sqlQuery {
+    padding: 1.5em 1em;
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    textarea {
+      resize: vertical;
+      text-align: left;
+      margin-bottom: 0.25em
+    }
+    button[type=submit] {
+      float: right;
+      font-weight: 600;
+      color: #fff;
+      background: #1E88E5;
+      padding: 0.5em 2em;
+      &:active {
+        transition: all 100ms;
+        transform: translateY(3px);
+      }
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+
+  table {
+    display: block;
+    overflow: auto;
+    background: #fff;
+    width: 100%;
+    table-layout: fixed;
+    thead {
+      border-bottom: 1px solid #ccc;
+      tr {
+        th {
+          padding: 0.5em;
+          text-align: left;
+          .format {
+            font-weight: 400;
+            color: #ccc;
+            display: block;
+            font-size: 0.75em;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid #eee;
+        transition: all 200ms;
+        &:last-child {
+          border-bottom: 0;
+        }
+        &:nth-child(odd) {
+          background: #f9f9f9;
+        }
+        &:hover {
+          background: #eee;
+        }
+        td {
+          padding: 0.5em;
+          border-right: 1px solid #eee;
+          &:last-child {
+            border-right: 0;
+          }
+        }
+      }
+    }
+  }
+}

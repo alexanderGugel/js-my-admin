@@ -20,11 +20,18 @@
       <button type="submit">Connect!</button>
       <span class="error">&nbsp;</span>
     </form>
-    <div class="dashboard">
-      <header>
-        <a href="/" class="logo"><i class="icon ion-ios-bolt"></i> jsMyAdmin</a>
-        <a href="/logout" class="logout"><button>Logout</button></a>
-      </header>
+    <section class="dashboard">
+      <nav>
+        <form class="col-md-4 tables">
+          <select></select>
+        </form>
+        <div class="col-md-4 logo">
+          <a href="/"><i class="icon ion-ios-bolt"></i> jsMyAdmin</a>
+        </div>
+        <div class="col-md-4 logout">
+          <a href="/logout"><button>Logout</button></a>
+        </div>
+      </nav>
       <form class="sqlQuery">
         <textarea autofocus></textarea>
         <button type="submit">Query!</button>
@@ -33,7 +40,7 @@
         <thead></thead>
         <tbody></tbody>
       </table>
-    </div>
+    </section>
     <script src="/bundle.js"></script>
   </body>
 </html>
