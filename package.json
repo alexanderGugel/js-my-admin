@@ -3,8 +3,8 @@
   "version": "0.0.2",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "watchify client/index.js -o client/bundle.js -d -v & stylus --watch --include-css client/index.styl & nodemon server.js",
-    "build": "browserify client/index.js -o client/bundle.js && stylus --include-css client/index.styl",
+    "watch": "watchify client/js/index.js -o client/js/bundle.js -d -v & stylus --watch --include-css client/css/index.styl & nodemon server.js",
+    "build": "browserify client/js/index.js -o client/js/bundle.js && stylus --include-css client/css/index.styl",
     "start": "npm run build && forever start server.js"
   },
   "dependencies": {
