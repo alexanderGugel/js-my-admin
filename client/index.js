@@ -2,44 +2,39 @@
 
 var reqwest      = require('reqwest');
 var $connectForm = document.querySelector('form.connect');
-var $dashboard   = document.querySelector('.dashboard');
+var $repl   = document.querySelector('.repl');
 var $toast       = document.querySelector('.toast');
 var Router       = require('ampersand-router');
+var schemasContainer = document.querySelector('.schemas-container');
 
 var router = new (Router.extend({
   routes: {
     '': 'index',
     'connect': 'connect',
-    'dashboard/:sqlQuery': 'dashboard',
+    'repl/:sqlQuery': 'repl',
     'logout': 'logout'
   },
 
   index: function() {
-    router.navigate(localStorage.getItem('connectionString') ? '/dashboard/SELECT * FROM information_schema.tables;' : '/connect', { trigger: true });
+    router.navigate(localStorage.getItem('connectionString') ? '/repl/SELECT * FROM information_schema.tables;' : '/connect', { trigger: true });
   },
 
   connect: function() {
     $toast.style.opacity = 0;
-    $dashboard.style.display = 'none';
+    $repl.style.display = 'none';
     $connectForm.style.display = 'block';
   },
 
-  dashboard: function(sqlQuery) {
-    $dashboard.style.display = 'block';
+  repl: function(sqlQuery) {
+    $repl.style.display = 'block';
     $connectForm.style.display = 'none';
 
-    if ($dashboard.querySelector('form.sqlQuery textarea').value !== sqlQuery) {
-      $dashboard.querySelector('form.sqlQuery textarea').value = sqlQuery;
+    if ($repl.querySelector('form.sqlQuery textarea').value !== sqlQuery) {
+      $repl.querySelector('form.sqlQuery textarea').value = sqlQuery;
     }
 
     localStorage.setItem('sqlQuery', sqlQuery);
-    var connectionString = localStorage.getItem('connectionString');
-    query(sqlQuery, connectionString, dashboardQueryCallback);
-    query('SELECT * FROM information_schema.tables;', connectionString, function(error, result) {
-      $dashboard.querySelector('.tables select').innerHTML = result.rows.map(function(table) {
-        return '<option data-table-name="' + table.table_name + '" data-table-schema="' + table.table_schema + '">' + table.table_schema + '/' + table.table_name + '</option>';
-      });
-    });
+    query(sqlQuery, localStorage.getItem('connectionString'), replQueryCallback);
   },
 
   logout: function() {
@@ -53,18 +48,58 @@ router.history.start({ pushState: true });
 
 
 (function _bindEvents() {
-  $dashboard.querySelector('.tables select').addEventListener('change', function() {
-    var selectedIndex = $dashboard.querySelector('.tables select').selectedIndex;
-    var selected = $dashboard.querySelector('.tables select').options[selectedIndex];
-    var tableName = selected.dataset.tableName;
-    var tableSchema = selected.dataset.tableSchema;
-    router.navigate('/dashboard/' + encodeURIComponent('SELECT * FROM ' + tableSchema + '.' + tableName + ';'), { trigger: true });
+  var schemasButton = $repl.querySelector('.schemas button');
+  var schemasContainerVisible = false;
+
+  schemasButton.addEventListener('click', function(event) {
+    if (!schemasContainerVisible) {
+      query('SELECT * FROM information_schema.tables;', localStorage.getItem('connectionString'), function(error, result) {
+        var schemas = {};
+        result.rows.forEach(function(row) {
+          schemas[row.table_schema] = schemas[row.table_schema] || [];
+          schemas[row.table_schema].push(row.table_name);
+        });
+        var html = '';
+        for (var schema in schemas) {
+          html += '<li class="schema">';
+          html += '<strong>' + schema + '</strong>';
+          html += '<ul class="tables">';
+          html += schemas[schema].map(function(table) {
+            return '<li class="table" data-table-name="' + table + '" data-table-schema="' + schema + '">' + table + '</li>';
+          }).join(' ');
+          html += '</ul>';
+          html += '</li>';
+        }
+        schemasContainer.innerHTML = html;
+        // schemasContainer.innerHTML = result.rows.map(function(table) {
+        //   return '<li data-table-name="' + table.table_name + '" data-table-schema="' + table.table_schema + '">' + table.table_schema + ':' + table.table_name + '</li>';
+        // }).join('');
+      });
+
+
+      schemasContainer.style.display = 'inline-block';
+      var rect = schemasButton.getBoundingClientRect();
+      schemasContainer.style.top = rect.bottom + 'px';
+      schemasContainer.style.left = rect.left + 'px';
+    } else {
+      schemasContainer.style.display = 'none';
+    }
+    schemasContainerVisible = !schemasContainerVisible;
   });
 
-  $dashboard.querySelector('form.sqlQuery').addEventListener('submit', function(event) {
+  // });
+  // $repl.querySelector('.tables select').addEventListener('change', function() {
+  //   var selectedIndex = $repl.querySelector('.tables select').selectedIndex;
+  //   var selected = $repl.querySelector('.tables select').options[selectedIndex];
+  //   var tableName = selected.dataset.tableName;
+  //   var tableSchema = selected.dataset.tableSchema;
+  //   router.navigate('/repl/' + encodeURIComponent('SELECT * FROM ' + tableSchema + '.' + tableName + ';'), { trigger: true });
+  // });
+
+  $repl.querySelector('form.sqlQuery').addEventListener('submit', function(event) {
     event.preventDefault();
-    var sqlQuery = $dashboard.querySelector('form.sqlQuery textarea').value;
-    router.navigate('/dashboard/' + encodeURIComponent(sqlQuery), { trigger: true });
+    var sqlQuery = $repl.querySelector('form.sqlQuery textarea').value;
+    router.navigate('/repl/' + encodeURIComponent(sqlQuery), { trigger: true });
   });
 
   $connectForm.addEventListener('submit', function (event) {
@@ -81,18 +116,18 @@ router.history.start({ pushState: true });
     });
   });
 
-  $dashboard.querySelector('form.sqlQuery textarea').addEventListener('keydown', function(event) {
+  $repl.querySelector('form.sqlQuery textarea').addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
       if (event.ctrlKey) {
-        $dashboard.querySelector('form.sqlQuery textarea').value += '\n';
+        $repl.querySelector('form.sqlQuery textarea').value += '\n';
       } else {
         event.preventDefault();
-        $dashboard.querySelector('form.sqlQuery button').click();
+        $repl.querySelector('form.sqlQuery button').click();
       }
     }
   });
 
-  $dashboard.querySelector('table.rows thead').addEventListener('click', function(event) {
+  $repl.querySelector('table.rows thead').addEventListener('click', function(event) {
     var el = event.srcElement;
     if (el.dataset.format) {
       el = el.parentNode;
@@ -127,7 +162,7 @@ function query(sqlQuery, connectionString, callback) {
   });
 }
 
-function dashboardQueryCallback(error, result) {
+function replQueryCallback(error, result) {
   $toast.innerHTML = error ? error.response : localStorage.getItem('sqlQuery');
   $toast.classList.remove('success');
   $toast.classList.remove('error');
@@ -142,6 +177,6 @@ function dashboardQueryCallback(error, result) {
       return '<td>' + row[column] + '</td>';
     }).join('') + '</tr>';
   }).join('');
-  $dashboard.querySelector('table.rows thead').innerHTML = thead;
-  $dashboard.querySelector('table.rows tbody').innerHTML = tbody;
+  $repl.querySelector('table.rows thead').innerHTML = thead;
+  $repl.querySelector('table.rows tbody').innerHTML = tbody;
 }

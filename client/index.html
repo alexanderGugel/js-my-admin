@@ -16,17 +16,21 @@
     <div class="toast-container">
       <div class="toast"></div>
     </div>
+    <ul class="schemas-container">
+      <!-- <ul class="schemas"></ul> -->
+    </ul>
+
     <form class="connect">
       <h1><i class="icon ion-ios-bolt"></i> jsMyAdmin</h1>
       <input placeholder="connection string" value="postgres://alexandergugel@localhost">
       <button type="submit">Connect!</button>
       <span class="error">&nbsp;</span>
     </form>
-    <section class="dashboard">
-      <nav>
-        <form class="col-md-4 tables">
-          <select></select>
-        </form>
+    <section class="repl">
+      <nav class="row">
+        <div class="col-md-4 schemas">
+          <button>Schemas</button>
+        </div>
         <div class="col-md-4 logo">
           <a href="/"><i class="icon ion-ios-bolt"></i> jsMyAdmin</a>
         </div>
@@ -36,7 +40,13 @@
       </nav>
       <form class="sqlQuery">
         <textarea autofocus></textarea>
-        <button type="submit">Query!</button>
+        <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6 right">
+            <button type="submit">Query!</button>
+          </div>
+        </div>
       </form>
       <table class="rows">
         <thead></thead>
