@@ -6,7 +6,6 @@ var $dashboard   = document.querySelector('.dashboard');
 var $toast       = document.querySelector('.toast');
 var Router       = require('ampersand-router');
 
-
 var router = new (Router.extend({
   routes: {
     '': 'index',
@@ -29,7 +28,7 @@ var router = new (Router.extend({
     $dashboard.style.display = 'block';
     $connectForm.style.display = 'none';
 
-    if ($dashboard.querySelector('form.sqlQuery textarea').value === '') {
+    if ($dashboard.querySelector('form.sqlQuery textarea').value !== sqlQuery) {
       $dashboard.querySelector('form.sqlQuery textarea').value = sqlQuery;
     }
 
@@ -54,11 +53,13 @@ router.history.start({ pushState: true });
 
 
 (function _bindEvents() {
-  // $dashboard.querySelector('.tables select').addEventListener('change', function(event) {
-  //   var selectedIndex = $dashboard.querySelector('.tables select').selectedIndex;
-  //   var selected = $dashboard.querySelector('.tables select').options[selectedIndex];
-  //   // TODO
-  // });
+  $dashboard.querySelector('.tables select').addEventListener('change', function() {
+    var selectedIndex = $dashboard.querySelector('.tables select').selectedIndex;
+    var selected = $dashboard.querySelector('.tables select').options[selectedIndex];
+    var tableName = selected.dataset.tableName;
+    var tableSchema = selected.dataset.tableSchema;
+    router.navigate('/dashboard/' + encodeURIComponent('SELECT * FROM ' + tableSchema + '.' + tableName + ';'), { trigger: true });
+  });
 
   $dashboard.querySelector('form.sqlQuery').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -91,13 +92,15 @@ router.history.start({ pushState: true });
     }
   });
 
-  // $dashboard.querySelector('table.rows thead').addEventListener('click', function(event) {
-  //   var el = event.srcElement;
-  //   if (el.dataset.format) {
-  //     el = el.parentNode;
-  //   }
-  //   // var sqlQuery = localStorage.getItem('sqlQuery');
-  // });
+  $dashboard.querySelector('table.rows thead').addEventListener('click', function(event) {
+    var el = event.srcElement;
+    if (el.dataset.format) {
+      el = el.parentNode;
+    }
+
+    console.log(el.dataset.field)
+    // var sqlQuery = localStorage.getItem('sqlQuery');
+  });
 }());
 
 
@@ -132,7 +135,7 @@ function dashboardQueryCallback(error, result) {
   $toast.style.opacity = 1;
   if (error) return;
   var thead = '<tr>' + result.fields.map(function(field) {
-    return '<th data-name="' + field.name + '">' + field.name + ' <span class="format" data-format="' + field.format + '">' + field.format + '</span></th>';
+    return '<th data-field="' + field.name + '">' + field.name + ' <span class="format" data-format="' + field.format + '">' + field.format + '</span></th>';
   }).join('') + '</tr>';
   var tbody = result.rows.map(function(row) {
     return '<tr>' + Object.keys(row).map(function(column) {
