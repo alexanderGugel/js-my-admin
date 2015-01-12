@@ -1,28 +1,6 @@
 var React = require('react');
 
 var ResultTableComponent = React.createClass({
-  componentDidMount: function() {
-    window.addEventListener('resize', this.resize);
-    this.resize();
-  },
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this.resize);
-  },
-  resize: function() {
-    var element = this.getDOMNode();
-    var rect = element.getBoundingClientRect();
-    var height = window.innerHeight - rect.top;
-    if (height < 500) {
-      height = 500;
-      document.body.style.overflow = 'auto';
-    } else {
-      document.body.style.overflow = 'hidden';
-    }
-    this.setState({style: {height: height}});
-  },
-  getInitialState: function() {
-    return {style: {height: 0}};
-  },
   render: function() {
     var result = this.props.result || {
       fields: [],
@@ -30,7 +8,7 @@ var ResultTableComponent = React.createClass({
     };
 
     return (
-      <table className="rows" style={this.state.style}>
+      <table className="rows">
         <thead>
           <tr>
             {result.fields.map(function(field) {

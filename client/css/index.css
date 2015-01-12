@@ -971,7 +971,14 @@ textarea:focus {
 /*background: #eee;*/
   border-bottom: 1px solid #fff;
 }
+.repl {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .repl nav {
+  order: 1;
+  flex: none;
   background: #fff;
   padding: 0.5em;
 }
@@ -995,7 +1002,9 @@ textarea:focus {
   text-align: right;
 }
 .repl form.sqlQuery {
+  order: 2;
   margin: 1em;
+  flex: none;
   position: relative;
 }
 .repl form.sqlQuery textarea {
@@ -1020,6 +1029,7 @@ textarea:focus {
   outline: 0;
 }
 .repl table {
+  order: 3;
   display: block;
   overflow: auto;
   background: #fff;

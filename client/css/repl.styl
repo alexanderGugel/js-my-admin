@@ -39,8 +39,13 @@
 }
 
 .repl {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   nav {
-   background: #fff;
+    order: 1;
+    flex: none;
+    background: #fff;
     @extend .depth-2;
     padding: 0.5em;
     button {
@@ -65,7 +70,9 @@
   }
 
   form.sqlQuery {
+    order: 2;
     margin: 1em;
+    flex: none;
     position: relative;
     textarea {
       resize: vertical;
@@ -91,6 +98,7 @@
   }
 
   table {
+    order: 3;
     display: block;
     overflow: auto;
     background: #fff;
