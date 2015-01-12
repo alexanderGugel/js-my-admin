@@ -24,12 +24,15 @@ var REPLComponent = React.createClass({
     if (event) event.preventDefault();
     this.props.router.navigate('/repl/' + encodeURIComponent(this.state.sqlQuery), { trigger: true });
   },
+  handleSchemasClick: function(event) {
+    
+  },
   render: function() {
     return (
       <section className="repl">
         <nav className="row">
           <div className="col-md-4 schemas">
-            <button>Schemas</button>
+            <button onClick={this.handleSchemasClick}>Schemas</button>
           </div>
           <div className="col-md-4 logo">
             <a href="/"><i className="icon ion-ios-bolt"></i> jsMyAdmin</a>
