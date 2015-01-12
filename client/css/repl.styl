@@ -1,9 +1,8 @@
 @require "../../node_modules/papier/src/util.styl";
 
-.schemas-container {
+.schema-selection {
   position: absolute;
   background: red;
-  display: none;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   @extend .depth-1;
@@ -11,14 +10,21 @@
   list-style: none;
   margin: 0.5em 0;
   padding: 0;
-  bottom: 0;
   overflow: auto;
-  ul, li {
+  z-index: 1000000;
+  li {
     margin: 0;
-    padding: 0;
-    list-style: none;
+    padding: 0.75em 1em;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+      border-bottom: 0;
+    }
+    &.section {
+      background: #f7f7f7;
+    }
+
   }
-  .schema {
+/*  .schema {
     padding: 0.5em 1em;
     border-bottom: 1px solid #eee;
     &:last-child {
@@ -31,11 +37,10 @@
     li.table {
       margin-left: 0.5em;
       padding: 0.5em 1em;
-      /*background: #eee;*/
       border-bottom: 1px solid #fff;
     }
   }
-
+*/
 }
 
 .repl {
@@ -76,7 +81,7 @@
     position: relative;
     textarea {
       resize: vertical;
-      height: 100px;
+      height: 75px;
     }
     button[type=submit] {
       position: absolute;
