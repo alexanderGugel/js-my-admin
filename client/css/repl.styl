@@ -65,16 +65,21 @@
   }
 
   form.sqlQuery {
-    padding: 1.5em 1em;
+    margin: 1em;
+    position: relative;
     textarea {
       resize: vertical;
-      margin-bottom: 0.25em
+      height: 100px;
     }
     button[type=submit] {
+      position: absolute;
+      bottom: 0;
+      right: 0;
       font-weight: 600;
       color: #fff;
       background: #1E88E5;
       padding: 0.5em 2em;
+      margin: 0.75em;
       &:active {
         transition: all 100ms;
         transform: translateY(3px);

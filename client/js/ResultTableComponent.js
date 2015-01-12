@@ -11,7 +11,14 @@ var ResultTableComponent = React.createClass({
   resize: function() {
     var element = this.getDOMNode();
     var rect = element.getBoundingClientRect();
-    this.setState({style: {height: window.innerHeight - rect.top}});
+    var height = window.innerHeight - rect.top;
+    if (height < 500) {
+      height = 500;
+      document.body.style.overflow = 'auto';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+    this.setState({style: {height: height}});
   },
   getInitialState: function() {
     return {style: {height: 0}};

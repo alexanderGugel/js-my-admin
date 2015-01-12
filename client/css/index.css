@@ -995,17 +995,22 @@ textarea:focus {
   text-align: right;
 }
 .repl form.sqlQuery {
-  padding: 1.5em 1em;
+  margin: 1em;
+  position: relative;
 }
 .repl form.sqlQuery textarea {
   resize: vertical;
-  margin-bottom: 0.25em;
+  height: 100px;
 }
 .repl form.sqlQuery button[type=submit] {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   font-weight: 600;
   color: #fff;
   background: #1e88e5;
   padding: 0.5em 2em;
+  margin: 0.75em;
 }
 .repl form.sqlQuery button[type=submit]:active {
   transition: all 100ms;

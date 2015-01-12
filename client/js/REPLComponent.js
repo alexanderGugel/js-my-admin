@@ -43,12 +43,8 @@ var REPLComponent = React.createClass({
         </nav>
         <form className="sqlQuery" onSubmit={this.handleSubmit}>
           <textarea ref="newSqlQuery" autofocus defaultValue={this.state.sqlQuery} onKeyDown={this.handleKeyDown} onChange={this.handleChange}></textarea>
-          <div className="row">
-            <div className="col-md-6">
-            </div>
-            <div className="col-md-6 right">
-              <button type="submit">Query!</button>
-            </div>
+          <div className="right">
+            <button type="submit">Query!</button>
           </div>
         </form>
         <ResultTableComponent result={this.props.result} />
