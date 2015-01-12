@@ -1,6 +1,10 @@
 var React = require('react');
 
 var ResultTableComponent = React.createClass({
+  handleFieldClick: function(field, event) {
+    console.log(field.name);
+    this.props.router.navigate('/repl/' + encodeURIComponent(this.props.sqlQuery + 'test'), { trigger: true });
+  },
   render: function() {
     var result = this.props.result || {
       fields: [],
@@ -13,12 +17,12 @@ var ResultTableComponent = React.createClass({
           <tr>
             {result.fields.map(function(field) {
               return (
-                <th key={field.name}>
+                <th key={field.name} onClick={this.handleFieldClick.bind(this, field)}>
                   {field.name}
                   <span className="format">{field.format}</span>
                 </th>
               );
-            })}
+            }.bind(this))}
           </tr>
         </thead>
         <tbody>

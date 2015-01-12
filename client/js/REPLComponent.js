@@ -8,12 +8,14 @@ var REPLComponent = React.createClass({
     };
   },
   handleChange: function(event) {
-    this.setState({sqlQuery: this.refs.newSqlQuery.getDOMNode().value});
+    this.setState({
+      sqlQuery: this.refs.sqlQuery.getDOMNode().value
+    });
   },
   handleKeyDown: function(event) {
     if (event.keyCode === 13) {
       if (event.ctrlKey) {
-        this.setState({sqlQuery: this.state.newSqlQuery + '\n'});
+        this.setState({sqlQuery: this.state.sqlQuery + '\n'});
       } else {
         event.preventDefault();
         this.handleSubmit();
@@ -25,7 +27,7 @@ var REPLComponent = React.createClass({
     this.props.router.navigate('/repl/' + encodeURIComponent(this.state.sqlQuery), { trigger: true });
   },
   handleSchemasClick: function(event) {
-    
+
   },
   render: function() {
     return (
@@ -42,12 +44,12 @@ var REPLComponent = React.createClass({
           </div>
         </nav>
         <form className="sqlQuery" onSubmit={this.handleSubmit}>
-          <textarea ref="newSqlQuery" autofocus defaultValue={this.state.sqlQuery} onKeyDown={this.handleKeyDown} onChange={this.handleChange}></textarea>
+          <textarea ref="sqlQuery" autofocus defaultValue={this.props.sqlQuery} onKeyDown={this.handleKeyDown} onChange={this.handleChange}></textarea>
           <div className="right">
             <button type="submit">Query!</button>
           </div>
         </form>
-        <ResultTableComponent result={this.props.result} />
+        <ResultTableComponent result={this.props.result} router={this.props.router} sqlQuery={this.props.sqlQuery} />
       </section>
     );
   }
