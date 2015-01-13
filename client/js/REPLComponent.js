@@ -6,9 +6,9 @@ var REPLComponent = React.createClass({
   getInitialState: function() {
     return {
       sqlQuery: this.props.sqlQuery,
-      schemasSelection: {
-        display: 'none'
-      },
+      terminalVisible: false,
+      schemaSelectionVisible: false,
+      schemaSelectionRect: {},
       schemasList: [],
       schemasMap: {},
       schemasLoaded: false
@@ -34,18 +34,14 @@ var REPLComponent = React.createClass({
     this.props.router.navigate('/repl/' + encodeURIComponent(this.state.sqlQuery), { trigger: true });
   },
   handleSchemasClick: function(event) {
-    var rect = event.target.getBoundingClientRect();
     this.setState({
-      schemasSelection: {
-        display: this.state.schemasSelection.display === 'none' ? 'inline-block' : 'none',
-        top: rect.bottom + 'px',
-        left: rect.left + 'px'
-      }
+      schemaSelectionVisible: !this.state.schemaSelectionVisible,
+      schemaSelectionRect: event.target.getBoundingClientRect()
     });
 
     if (!this.state.schemasLoaded) {
       query('SELECT * FROM information_schema.tables;', localStorage.getItem('connectionString'), function(error, result) {
-        console.log(result.rows[0])
+        console.log(result.rows[0]);
         var schemasMap = {};
         result.rows.forEach(function(row) {
           schemasMap[row.table_schema] = schemasMap[row.table_schema] || [];
@@ -56,10 +52,32 @@ var REPLComponent = React.createClass({
       }.bind(this));
     }
   },
+  handleTerminalClick: function(event) {
+    this.setState({
+      terminalVisible: !this.state.terminalVisible
+    });
+  },
+  handleLogoutClick: function(event) {
+    this.props.router.navigate('logout', {trigger: true});
+  },
   render: function() {
+    var terminalStyle = {
+      display: this.state.terminalVisible ? 'block' : 'none'
+    };
+    var schemaSelectionStyle = {
+      top: this.state.schemaSelectionRect.bottom + 'px',
+      left: this.state.schemaSelectionRect.left + 'px',
+      display: this.state.schemaSelectionVisible ? 'block' : 'none'
+    };
+    var terminalButtonStyle = {
+      opacity: this.state.terminalVisible ? 0.5 : 1
+    };
+    var schemaSelectionButtonStyle = {
+      opacity: this.state.schemaSelectionVisible ? 0.5 : 1
+    };
     return (
       <section className="repl">
-        <ul className="schema-selection" style={this.state.schemasSelection}>
+        <ul className="schema-selection" style={schemaSelectionStyle}>
           <li className="section"><strong>Schemas</strong></li>
           {this.state.schemasList.map(function(schema) {
             return <li key={schema}>{schema}</li>;
@@ -67,16 +85,17 @@ var REPLComponent = React.createClass({
         </ul>
         <nav className="row">
           <div className="col-md-4 schemas">
-            <button onClick={this.handleSchemasClick}>Schemas</button>
+            <button onClick={this.handleSchemasClick} style={schemaSelectionButtonStyle}>Schemas</button>
           </div>
           <div className="col-md-4 logo">
             <a href="/"><i className="icon ion-ios-bolt"></i> jsMyAdmin</a>
           </div>
-          <div className="col-md-4 logout">
-            <a href="/logout"><button>Logout</button></a>
+          <div className="col-md-4">
+            <button style={terminalButtonStyle} onClick={this.handleTerminalClick}>SQL Terminal</button>
+            <button onClick={this.handleLogoutClick}>Logout</button>
           </div>
         </nav>
-        <form className="sqlQuery" onSubmit={this.handleSubmit}>
+        <form style={terminalStyle} className="terminal" onSubmit={this.handleSubmit}>
           <textarea ref="sqlQuery" autofocus defaultValue={this.props.sqlQuery} onKeyDown={this.handleKeyDown} onChange={this.handleChange}></textarea>
           <div className="right">
             <button type="submit">Query!</button>

@@ -946,23 +946,6 @@ textarea:focus {
   padding: 0;
   overflow: auto;
   z-index: 1000000;
-/*  .schema {
-    padding: 0.5em 1em;
-    border-bottom: 1px solid #eee;
-    &:last-child {
-      border-bottom: 0;
-    }
-    strong {
-      margin-bottom: 1em;
-      display: block;
-    }
-    li.table {
-      margin-left: 0.5em;
-      padding: 0.5em 1em;
-      border-bottom: 1px solid #fff;
-    }
-  }
-*/
 }
 .schema-selection li {
   margin: 0;
@@ -1002,20 +985,28 @@ textarea:focus {
   text-decoration: none;
   font-weight: bold;
 }
-.repl nav .logout {
+.repl nav :last-child {
   text-align: right;
 }
-.repl form.sqlQuery {
+.repl nav :last-child :first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.repl nav :last-child :last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.repl form.terminal {
   order: 2;
   margin: 1em;
   flex: none;
   position: relative;
 }
-.repl form.sqlQuery textarea {
+.repl form.terminal textarea {
   resize: vertical;
   height: 75px;
 }
-.repl form.sqlQuery button[type=submit] {
+.repl form.terminal button[type=submit] {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -1025,14 +1016,15 @@ textarea:focus {
   padding: 0.5em 2em;
   margin: 0.75em;
 }
-.repl form.sqlQuery button[type=submit]:active {
+.repl form.terminal button[type=submit]:active {
   transition: all 100ms;
   transform: translateY(3px);
 }
-.repl form.sqlQuery button[type=submit]:focus {
+.repl form.terminal button[type=submit]:focus {
   outline: 0;
 }
 .repl table {
+  border-top: 1px solid #e8e8e8;
   order: 3;
   display: block;
   overflow: auto;

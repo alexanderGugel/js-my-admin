@@ -24,23 +24,6 @@
     }
 
   }
-/*  .schema {
-    padding: 0.5em 1em;
-    border-bottom: 1px solid #eee;
-    &:last-child {
-      border-bottom: 0;
-    }
-    strong {
-      margin-bottom: 1em;
-      display: block;
-    }
-    li.table {
-      margin-left: 0.5em;
-      padding: 0.5em 1em;
-      border-bottom: 1px solid #fff;
-    }
-  }
-*/
 }
 
 .repl {
@@ -69,12 +52,21 @@
       }
       padding: 0.5em 1.5em;
     }
-    .logout {
+
+    :last-child {
       text-align: right;
+      :first-child {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+      }
+      :last-child {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+      }
     }
   }
 
-  form.sqlQuery {
+  form.terminal {
     order: 2;
     margin: 1em;
     flex: none;
@@ -103,6 +95,7 @@
   }
 
   table {
+    border-top: 1px solid rgb(232, 232, 232);
     order: 3;
     display: block;
     overflow: auto;
