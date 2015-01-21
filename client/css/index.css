@@ -1031,9 +1031,12 @@ textarea:focus {
   background: #fff;
   width: 100%;
   table-layout: fixed;
+  transition: all 100ms;
 }
 .repl table thead {
   border-bottom: 1px solid #ccc;
+  position: relative;
+  background: #fff;
 }
 .repl table thead tr th {
   padding: 0.5em;

@@ -1,19 +1,39 @@
+// TODO Add headroom js
+
 var React = require('react');
 
 var ResultTableComponent = React.createClass({
+  getInitialState: function() {
+    return {
+      scrollTop: 0
+    };
+  },
   handleFieldClick: function(field, event) {
     console.log(field.name);
     this.props.router.navigate('/repl/' + encodeURIComponent(this.props.sqlQuery + 'test'), { trigger: true });
+  },
+  componentDidMount: function() {
+    this.getDOMNode().addEventListener('scroll', this.handleScroll);
+  },
+  componentWillUnmount: function() {
+    this.getDOMNode().removeEventListener('scroll', this.handleScroll);
+  },
+  handleScroll: function(event) {
+    this.setState({
+      scrollTop: this.getDOMNode().scrollTop
+    });
   },
   render: function() {
     var result = this.props.result || {
       fields: [],
       rows: []
     };
-
+    var theadStyle = {
+      transform: 'translateY(' + this.state.scrollTop + 'px)'
+    };
     return (
       <table className="rows">
-        <thead>
+        <thead style={theadStyle}>
           <tr>
             {result.fields.map(function(field) {
               return (
