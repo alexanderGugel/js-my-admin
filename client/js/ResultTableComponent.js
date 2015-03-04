@@ -1,5 +1,10 @@
 var React = require('react');
 
+var FixedDataTable = require('fixed-data-table');
+
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
+
 var ResultTableComponent = React.createClass({
   getInitialState: function() {
     return {

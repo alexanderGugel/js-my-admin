@@ -1,5 +1,7 @@
-var ResultTableComponent = require('./ResultTableComponent');
+Object.assign = require('object-assign');
+
 var React                = require('react');
+var ResultTableComponent = require('./ResultTableComponent');
 var query                = require('./query');
 
 var REPLComponent = React.createClass({
