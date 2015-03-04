@@ -21,9 +21,10 @@ var Router = Router.extend({
   },
 
   repl: function(sqlQuery) {
+    var router = this;
     query(sqlQuery, localStorage.getItem('connectionString'), function(error, result) {
-      React.render(<REPLComponent router={this} sqlQuery={sqlQuery} error={error} result={result} />, document.body);
-    }.bind(this));
+      React.render(<REPLComponent router={router} sqlQuery={sqlQuery} error={error} result={result} />, document.body);
+    });
   },
 
   logout: function() {

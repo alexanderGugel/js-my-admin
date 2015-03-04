@@ -1,5 +1,3 @@
-// TODO Add headroom js
-
 var React = require('react');
 
 var ResultTableComponent = React.createClass({
